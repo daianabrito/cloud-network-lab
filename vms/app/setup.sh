@@ -2,7 +2,7 @@
 set -e
 
 echo "[+] Running common setup"
-# Executa common.sh com sudo, caso ainda precise instalar pacotes básicos
+# common.sh já cuida de apt update/upgrade e instalação de pacotes básicos
 bash ../../common.sh
 
 echo "[+] Creating app directory"
@@ -20,10 +20,14 @@ echo "[+] Installing Python dependencies in venv"
 pip install --upgrade pip
 pip install flask psycopg2-binary
 
+echo "[+] Preparing log directory"
+mkdir -p ~/app_logs
+LOGFILE=~/app_logs/app.log
+echo "[+] Log will be written to $LOGFILE"
+
 echo "[+] Starting application"
-# Garante que a VM possa rodar o app em background com logs
-LOGFILE=~/app.log
+# roda o app em background e escreve logs no diretório do usuário
 nohup /opt/app/venv/bin/python /opt/app/main.py > "$LOGFILE" 2>&1 &
 
-echo "[+] App started successfully"
-echo "[+] Logs available at $LOGFILE"
+echo "[+] App started successfully!"
+echo "[+] You can check logs with: tail -f $LOGFILE"

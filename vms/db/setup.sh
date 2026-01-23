@@ -2,7 +2,7 @@
 set -e
 
 echo "[+] Running common setup"
-# common.sh já cuida do apt update, apt upgrade e pacotes básicos
+# common.sh já cuida de apt update/upgrade e instalação de pacotes básicos
 bash ../../common.sh
 
 echo "[+] Installing PostgreSQL"
@@ -22,10 +22,9 @@ echo "[+] Configuring firewall for DB access (App VM only)"
 sudo ufw allow from 10.0.1.0/24 to any port 5432 proto tcp
 sudo ufw --force enable
 
-echo "[+] Setting up Python virtual environment"
+echo "[+] Setting up Python virtual environment for scripts"
 cd ~
 python3 -m venv venv
-# ativa o venv para instalar pacotes
 source venv/bin/activate
 
 echo "[+] Installing Python DB driver"
@@ -35,10 +34,12 @@ pip install psycopg2-binary
 echo "[+] Creating log directory for scripts"
 mkdir -p ~/db_logs
 chmod 755 ~/db_logs
+echo "[+] Logs will be written to ~/db_logs"
 
 echo "[+] DB VM setup completed!"
 echo "[+] Python venv: ~/venv"
-echo "[+] Logs: ~/db_logs"
+echo "[+] Logs directory: ~/db_logs"
+
 
 ###
 #Notas importantes
@@ -50,3 +51,5 @@ echo "[+] Logs: ~/db_logs"
 #Firewall: liberando somente a subnet da App VM (10.0.1.0/24) para PostgreSQL (porta 5432).
 
 #Sudo: usado apenas onde necessário (apt, systemctl, ufw, psql como postgres).
+
+#PostgreSQL: cria banco labdb e usuário labuser com senha labpass — fácil para testes no lab.
