@@ -22,6 +22,8 @@ pip install flask psycopg2-binary
 
 echo "[+] Starting application"
 # Garante que a VM possa rodar o app em background com logs
-nohup /opt/app/venv/bin/python /opt/app/main.py > /var/log/app.log 2>&1 &
+LOGFILE=~/app.log
+nohup /opt/app/venv/bin/python /opt/app/main.py > "$LOGFILE" 2>&1 &
 
 echo "[+] App started successfully"
+echo "[+] Logs available at $LOGFILE"
