@@ -1,16 +1,27 @@
 #!/bin/bash
 set -e
 
-# Executa common
-../../common.sh
+echo "[+] Running common setup"
+# Executa common.sh com sudo, caso ainda precise instalar pacotes básicos
+sudo ../../common.sh
 
-# Instala Python e dependências
-pip3 install flask psycopg2-binary
+echo "[+] Creating app directory"
+sudo mkdir -p /opt/app
+sudo cp -r ../../app/* /opt/app/
+sudo chown -R labuser:labuser /opt/app
 
-# Cria diretório da aplicação
-mkdir -p /opt/app
-cp -r ../../app/* /opt/app/
+echo "[+] Setting up Python virtual environment"
+cd /opt/app
+python3 -m venv venv
+# ativa o venv para instalar pacotes
+source venv/bin/activate
 
-# Start app
-nohup python3 /opt/app/main.py > /var/log/app.log 2>&1 &
-echo "[+] App started"
+echo "[+] Installing Python dependencies in venv"
+pip install --upgrade pip
+pip install flask psycopg2-binary
+
+echo "[+] Starting application"
+# Garante que a VM possa rodar o app em background com logs
+nohup /opt/app/venv/bin/python /opt/app/main.py > /var/log/app.log 2>&1 &
+
+echo "[+] App started successfully"
