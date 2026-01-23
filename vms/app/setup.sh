@@ -7,7 +7,7 @@ bash ../../common.sh
 
 echo "[+] Creating app directory"
 sudo mkdir -p /opt/app
-sudo cp -r ../../app/* /opt/app/
+sudo cp -r ../app/* /opt/app/
 sudo chown -R labuser:labuser /opt/app
 
 echo "[+] Setting up Python virtual environment"
