@@ -3,7 +3,7 @@ set -e
 
 echo "[+] Running common setup"
 # Executa common.sh com sudo, caso ainda precise instalar pacotes básicos
-sudo ../../common.sh
+bash ../../common.sh
 
 echo "[+] Creating app directory"
 sudo mkdir -p /opt/app
